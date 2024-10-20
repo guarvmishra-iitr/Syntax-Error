@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+
+    <title>Bid Response</title>
+    <!-- <script>
+        const contractAdd = "0x85b7DF9aE88707157128B9E62aab7cfCCF6C0470";
+        function startAuction() {
+            
+
+            // Create a web3 instance
+            const web3 = new Web3(window.ethereum);
+
+            fetch('contract.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const result = response.json();
+            })
+            .then(data => {
+                // Access the data
+                document.getElementById('output').textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+
+            // Connect to the contract
+            const contract = new web3.eth.Contract([result, contractAdd]);
+            console.log("Herere")
+
+            // Call the startAuction function
+            contract.methods.startAuction().call()
+        }
+
+        
+    </script> -->
+  </head>
+  <body>
+    <header class="taskbar">
+      <div class="logo">Bid Response</div>
+      <nav class="navbar">
+        <a href="index.html">Home</a>
+        <a href="livetenders.html">Live Tenders</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </header>
+
+    <div class="content">
+      <h2>Bid Amount Confirmation</h2>
+      <p>The current bid amount set by the government is: $100,000</p>
+      <p>Do you accept this bid amount?</p>
+      <div class="response-options">
+        <button id="yes-button">Yes</button>
+        <button id="no-button">No</button>
+      </div>
+      <div class="circular-timer">
+        <svg>
+          <circle cx="50" cy="50" r="45"></circle>
+          <circle cx="50" cy="50" r="45" id="progress-circle"></circle>
+        </svg>
+        <div class="timer-text" id="countdown">10s</div>
+      </div>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Bidder's Portal. All rights reserved.</p>
+    </footer>
+
+    <script>
+      // JavaScript for the timer animation
+      let timeLeft = 10;
+      const countdownElement = document.getElementById("countdown");
+      const progressCircle = document.getElementById("progress-circle");
+      const circumference = 2 * Math.PI * 45; // 2πr where r = 45
+
+      progressCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+      progressCircle.style.strokeDashoffset = circumference;
+
+      const timerInterval = setInterval(() => {
+        timeLeft--;
+        countdownElement.textContent = timeLeft + "s";
+
+        // Calculate the progress based on time remaining
+        const offset = circumference - (timeLeft / 10) * circumference;
+        progressCircle.style.strokeDashoffset = offset;
+
+        // When the countdown reaches 0, clear the interval and show a pop-up
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          alert("Time limit exceeded"); // Show the pop-up message
+          window.location.href = "bidders.html"; // Redirect to bidders.html
+        }
+      }, 1000);
+
+      // Function to handle the response
+      function submitResponse(response) {
+        if (response === "yes") {
+          window.location.href = "bidconfirmation.html";
+        } else if (response === "no") {
+          alert("Thank you for your response");
+          window.location.href = "bidders.html";
+        }
+      }
+      document
+        .getElementById("yes-button")
+        .addEventListener("click", async function (event) {
+          event.preventDefault(); // Prevent the default action (navigation)
+
+          // Step 3: Define and call the Web3.js function
+          // Ensure you have a Web3 instance connected to a provider
+          if (typeof window.ethereum !== "undefined") {
+            const web3 = new Web3(window.ethereum);
+            try {
+              await window.ethereum.request({ method: "eth_requestAccounts" });
+
+              // Fetch the contract ABI
+              const response = await fetch("contract.json");
+              const contractABI = await response.json();
+
+              // Replace with your contract address
+              const contractAddress =
+                "0x50c46Ca1fd3A065E638B0878b02BCcc4B533b62d";
+              const contract = new web3.eth.Contract(
+                contractABI,
+                contractAddress
+              );
+
+              // Replace with the function you want to call
+              const accounts = await web3.eth.getAccounts();
+              const result = await contract.methods
+                .placeBid(true)
+                .send({ from: accounts[0] });
+              console.log("Transaction successful:", result);
+            } catch (error) {
+              console.error("Error:", error);
+            }
+          } else {
+            console.error("No Web3 provider found. Please install MetaMask!");
+          }
+          submitResponse("yes");
+        });
+
+      document
+        .getElementById("no-button")
+        .addEventListener("click", async function (event) {
+          event.preventDefault(); // Prevent the default action (navigation)
+
+          // Step 3: Define and call the Web3.js function
+          // Ensure you have a Web3 instance connected to a provider
+          if (typeof window.ethereum !== "undefined") {
+            const web3 = new Web3(window.ethereum);
+            try {
+              await window.ethereum.request({ method: "eth_requestAccounts" });
+
+              // Fetch the contract ABI
+              const response = await fetch("contract.json");
+              const contractABI = await response.json();
+
+              // Replace with your contract address
+              const contractAddress =
+                "0x50c46Ca1fd3A065E638B0878b02BCcc4B533b62d";
+              const contract = new web3.eth.Contract(
+                contractABI,
+                contractAddress
+              );
+
+              // Replace with the function you want to call
+              const accounts = await web3.eth.getAccounts();
+              const result = await contract.methods
+                .placeBid(false)
+                .send({ from: accounts[0] });
+              console.log("Transaction successful:", result);
+            } catch (error) {
+              console.error("Error:", error);
+            }
+          } else {
+            console.error("No Web3 provider found. Please install MetaMask!");
+          }
+          submitResponse("no");
+        });
+    </script>
+  </body>
+</html>

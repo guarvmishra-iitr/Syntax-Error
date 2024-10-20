@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Bid Confirmation</title>
+</head>
+<body>
+
+<header class="taskbar">
+    <div class="logo">Bid Confirmation</div>
+    <nav class="navbar">
+        <a href="index.html">Home</a>
+        <a href="livetenders.html">Live Tenders</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+</header>
+
+<div class="content">
+    <h2>Bid Confirmation</h2>
+    <p>Your bid is being processed. Please wait for the results.</p>
+    <div class="timer">
+        <p>Time Remaining: <span id="countdown">10</span> seconds</p>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2024 Bidder's Portal. All rights reserved.</p>
+</footer>
+
+<script>
+    // Countdown timer function
+    let timeLeft = 10;
+    const countdownElement = document.getElementById('countdown');
+
+    const timerInterval = setInterval(() => {
+        timeLeft--;
+        countdownElement.textContent = timeLeft;
+
+        // When the countdown reaches 0, show results or redirect
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            window.location.href = 'result.html'; // Redirect to bid results page
+        }
+    }, 1000);
+</script>
+
+</body>
+</html>

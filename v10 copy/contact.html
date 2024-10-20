@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Contractor Portal</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="taskbar">
+        <div class="logo">Contractor Portal</div>
+        <nav class="navbar">
+            <a href="index.html">Home</a>
+            
+            <a href="blog.html">Blog</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Contact</a>
+            <a href="media.html">Media</a>
+            <a href="notification.html">Notifications</a>
+          
+        </nav>
+    </header>
+
+    <div class="content">
+        <div class="contact-container">
+            <h2>Contact Us</h2>
+            <p>If you have any questions, please feel free to reach out to us using the information below.</p>
+
+            <div class="contact-info">
+                <h3>Our Contacts</h3>
+                <ul>
+                    <li>📞 Phone: +1 (234) 567-8901</li>
+                    <li>📧 Email: info@contractorportal.com</li>
+                    <li>🏢 Address: 123 Contractor Lane, Suite 100, Buildtown, CA 90210</li>
+                </ul>
+            </div>
+
+            <div class="contact-form">
+                <h3>Send Us a Message</h3>
+                <form id="contactForm">
+                    <input type="text" placeholder="Your Name" required>
+                    <input type="email" placeholder="Your Email" required>
+                    <textarea placeholder="Your Message" required></textarea>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple form submission handling
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            alert('Your message has been sent! Thank you for contacting us.');
+            this.reset(); // Reset the form after submission
+        });
+    </script>
+</body>
+</html>

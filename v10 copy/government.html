@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+    <title>Government Portal</title>
+    
+    <style>
+      /* Add styles to space out the footer */
+      .content {
+        margin-bottom: 100px; /* Increase the margin to push the footer down */
+        text-align: center;
+      }
+      /* Additional styles can go here */
+    </style>
+  </head>
+  <body>
+    <header class="taskbar">
+      <div class="logo">Government Portal</div>
+      <nav class="navbar">
+        <a href="index.html">Home</a>
+      </nav>
+    </header>
+
+    <div class="content">
+      <h2>Tender Information</h2>
+      <h3>Tender for reconstruction of road</h3>
+      <p>Press the button below to start bidding</p>
+      <button type="button" id="startBid">Start Bidding</button>
+    </div>
+
+    <footer>
+      <p>&copy; 2024 Government Portal. All rights reserved.</p>
+    </footer>
+
+    <script>
+      function startBidding() {
+        // Open the "Bidding in Progress" page in a new tab
+        window.open("biddinginprogress.html", "_blank");
+      }
+      document
+        .getElementById("startBid")
+        .addEventListener("click", async function (event) {
+          event.preventDefault(); // Prevent the default action (navigation)
+
+          // Step 3: Define and call the Web3.js function
+          // Ensure you have a Web3 instance connected to a provider
+          if (typeof window.ethereum !== "undefined") {
+            const web3 = new Web3(window.ethereum);
+            try {
+              await window.ethereum.request({ method: "eth_requestAccounts" });
+
+              // Fetch the contract ABI
+              const response = await fetch("contract.json");
+              const contractABI = await response.json();
+
+              // Replace with your contract address
+              const contractAddress =
+                "0x50c46Ca1fd3A065E638B0878b02BCcc4B533b62d";
+              const contract = new web3.eth.Contract(
+                contractABI,
+                contractAddress
+              );
+
+              // Replace with the function you want to call
+              const accounts = await web3.eth.getAccounts();
+              const result = await contract.methods
+                .startAuction()
+                .send({ from: accounts[0] });
+              console.log("Transaction successful:", result);
+            } catch (error) {
+              console.error("Error:", error);
+            }
+          } else {
+            console.error("No Web3 provider found. Please install MetaMask!");
+          }
+        });
+    </script>
+  </body>
+</html>

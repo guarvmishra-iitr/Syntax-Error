@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+
+    <title>Live Tenders</title>
+</head>
+<body>
+
+<header class="taskbar">
+    <div class="logo">Live Tenders</div>
+    <nav class="navbar">
+        <a href="index.html">Home</a>
+    
+        <a href="contact.html">Contact</a>
+    </nav>
+</header>
+
+<div class="content">
+    <h2>Current Live Biddings</h2>
+    <div class="bidding-section" id="biddingList">
+        <!-- Existing live bidding items -->
+        <div class="bidding-item">
+            <h3><a href="bidresponse.html?project=Road+Construction&amount=500000" id="road-construction-link">Road Construction</a></h3>
+            <p>Bid Amount: $500,000 - Closing Date: 2024-10-30</p>
+        </div>
+       
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2024 Live Tenders. All rights reserved.</p>
+</footer>
+
+<script>
+    // Function to get query parameters from the URL
+    function getQueryParams() {
+        const params = new URLSearchParams(window.location.search);
+        const project = params.get('project');
+        const amount = params.get('amount');
+        const closingDate = params.get('closingDate');
+        return { project, amount, closingDate };
+    }
+
+    // Function to display the new tender
+    function displayNewTender() {
+        const { project, amount, closingDate } = getQueryParams();
+        if (project && amount && closingDate) {
+            const biddingList = document.getElementById('biddingList');
+            const newBiddingItem = document.createElement('div');
+            newBiddingItem.classList.add('bidding-item');
+            newBiddingItem.innerHTML = `
+                <h3><a href="bidresponse.html?project=${encodeURIComponent(project)}&amount=${encodeURIComponent(amount)}">${project}</a></h3>
+                <p>Bid Amount: $${amount} - Closing Date: ${closingDate}</p>
+            `;
+            biddingList.appendChild(newBiddingItem);
+        }
+    }
+
+    // Call the function to display the new tender when the page loads
+    window.onload = displayNewTender;
+    </script>
+
+</body>
+</html>

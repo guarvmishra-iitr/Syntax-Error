@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Bid Result</title>
+</head>
+<body>
+
+<header class="taskbar">
+    <div class="logo">Bid Result</div>
+    <nav class="navbar">
+        <a href="index.html">Home</a>
+        <a href="livetenders.html">Live Tenders</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+</header>
+
+<div class="content">
+    <h2>Loading results for the bid...</h2>
+    
+</div>
+
+
+<footer>
+    <p>&copy; 2024 Bidder's Portal. All rights reserved.</p>
+</footer>
+
+<script>
+    // Function to get query parameters from the URL
+    function getQueryParams() {
+        const params = new URLSearchParams(window.location.search);
+        const project = params.get('project');
+        let amount = parseFloat(params.get('amount'));
+        return { project, amount };
+    }
+
+    // Function to display the response counts after a delay
+    function displayResponseCounts() {
+        // Get the counts from localStorage
+        const yesCount = localStorage.getItem('yesCount') || 0;
+        const noCount = localStorage.getItem('noCount') || 0;
+
+        // Display the counts
+        document.getElementById('yesCount').innerText = yesCount;
+        document.getElementById('noCount').innerText = noCount;
+
+        // Show the response counts section
+        document.getElementById('responseCounts').style.display = 'block';
+    }
+
+    // Function to redirect to bid response page after 5 seconds
+    function redirectToBidResponse() {
+        const { project, amount } = getQueryParams();
+        const reducedAmount = amount - (amount * 0.05); // Reduce bid amount by 5%
+
+        // Redirect to bid response with the reduced bid amount
+        window.location.href = `bidresponse.html?project=${encodeURIComponent(project)}&amount=${reducedAmount.toFixed(2)}`;
+    }
+
+    // Wait for 5 seconds before displaying the counts and then redirecting
+    setTimeout(() => {
+        displayResponseCounts();
+        setTimeout(redirectToBidResponse, 5000); // Redirect after an additional 5 seconds
+    }, 5000);
+</script>
+
+</body>
+</html>
